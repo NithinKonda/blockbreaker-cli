@@ -127,3 +127,11 @@ class BlockBreaker:
                 self.ball_dx = math.cos(angle) * (1 if random.random() > 0.5 else -1)
                 self.ball_dy = -math.sin(angle)
                 return
+        self.ball_x, self.ball_y = new_x, new_y
+        
+
+        self.check_block_collisions()
+        
+
+        if all(block['hit'] for block in self.blocks):
+            self.game_won = True
