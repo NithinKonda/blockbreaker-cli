@@ -83,3 +83,33 @@ class BlockBreaker:
             self.paddle_x = max(0, self.paddle_x - move_amount)
         elif direction == 'right':
             self.paddle_x = min(self.width - self.paddle_size, self.paddle_x + move_amount)
+
+
+    def update_ball(self, dt):
+        new_x = self.ball_x + self.ball_dx * self.ball_speed * dt
+        new_y = self.ball_y + self.ball_dy * self.ball_speed * dt
+        
+
+        if new_x < 0 or new_x >= self.width:
+            self.ball_dx = -self.ball_dx
+            new_x = max(0, min(new_x, self.width - 1))
+        
+        if new_y < 0:
+            self.ball_dy = -self.ball_dy
+            new_y = 0
+        
+
+        if (new_y >= self.paddle_y and 
+            self.ball_y < self.paddle_y and 
+            new_x >= self.paddle_x and 
+            new_x < self.paddle_x + self.paddle_size):
+            
+
+            hit_position = (new_x - self.paddle_x) / self.paddle_size
+            angle = math.pi * (0.25 + 0.5 * hit_position)  # π/4 to 3π/4
+            
+
+            self.ball_dx = math.cos(angle) * (1 if hit_position >= 0.5 else -1)
+            self.ball_dy = -math.sin(angle)
+            
+            new_y = self.paddle_y - 1
