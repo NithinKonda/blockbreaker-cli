@@ -135,3 +135,29 @@ class BlockBreaker:
 
         if all(block['hit'] for block in self.blocks):
             self.game_won = True
+    
+
+
+    def check_block_collisions(self):
+        for block in self.blocks:
+            if block['hit']:
+                continue
+            
+
+            ball_int_x, ball_int_y = int(self.ball_x), int(self.ball_y)
+            
+            if (ball_int_y == block['y'] and 
+                ball_int_x >= block['x'] and 
+                ball_int_x < block['x'] + block['width']):
+                
+
+                block['hit'] = True
+                
+
+                self.score += 10
+                
+
+                self.ball_dy = -self.ball_dy
+                
+
+                break
