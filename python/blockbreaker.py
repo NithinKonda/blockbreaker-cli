@@ -113,3 +113,17 @@ class BlockBreaker:
             self.ball_dy = -math.sin(angle)
             
             new_y = self.paddle_y - 1
+         if new_y >= self.height:
+            self.lives -= 1
+            if self.lives <= 0:
+                self.game_over = True
+            else:
+                # Reset ball position
+                self.ball_x = self.paddle_x + self.paddle_size // 2
+                self.ball_y = self.paddle_y - 1
+                
+                # Random angle between π/6 and 5π/6
+                angle = math.pi * (1/6 + 2/3 * random.random())
+                self.ball_dx = math.cos(angle) * (1 if random.random() > 0.5 else -1)
+                self.ball_dy = -math.sin(angle)
+                return
