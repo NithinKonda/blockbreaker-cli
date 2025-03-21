@@ -161,3 +161,19 @@ class BlockBreaker:
                 
 
                 break
+
+
+    def draw(self):
+        self.screen.clear()
+        
+        for i in range(self.paddle_size):
+            x = int(self.paddle_x + i)
+            y = int(self.paddle_y)
+            if 0 <= x < self.width and 0 <= y < self.height:
+                try:
+                    if curses.has_colors():
+                        self.screen.addstr(y, x, self.paddle_char, curses.color_pair(2))
+                    else:
+                        self.screen.addstr(y, x, self.paddle_char)
+                except curses.error:
+                    pass
