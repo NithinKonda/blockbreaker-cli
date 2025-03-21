@@ -36,15 +36,19 @@ class BlockBreaker:
 
 
     def reset_game(self):
-        # Reset paddle position
+
         self.paddle_x = (self.width - self.paddle_size) // 2
         self.paddle_y = self.height - 2
         
-        # Reset ball position (starts above paddle)
         self.ball_x = self.width // 2
         self.ball_y = self.paddle_y - 1
         
-        # Set ball direction (starts moving up-right)
+
         angle = math.pi / 4  # 45 degrees
         self.ball_dx = math.cos(angle)
         self.ball_dy = -math.sin(angle)
+
+
+        self.create_blocks()
+
+        
