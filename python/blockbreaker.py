@@ -10,7 +10,7 @@ class BlockBreaker:
         self.screen.timeout(0)
         self.height, self.width = self.screen.getmaxyx()
 
-    self.paddle_char = "═"
+        self.paddle_char = "═"
         self.ball_char = "●"
         self.block_char = "█"
         self.paddle_size = 8
@@ -113,7 +113,7 @@ class BlockBreaker:
             self.ball_dy = -math.sin(angle)
             
             new_y = self.paddle_y - 1
-         if new_y >= self.height:
+        if new_y >= self.height:
             self.lives -= 1
             if self.lives <= 0:
                 self.game_over = True
@@ -195,7 +195,7 @@ class BlockBreaker:
                         pass
 
 
-         status_text = f"Score: {self.score}  Lives: {self.lives}"
+        status_text = f"Score: {self.score}  Lives: {self.lives}"
         try:
             if curses.has_colors():
                 self.screen.addstr(0, 0, status_text, curses.color_pair(7))
