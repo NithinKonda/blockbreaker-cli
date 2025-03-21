@@ -227,3 +227,42 @@ class BlockBreaker:
                 pass
         
         self.screen.refresh()
+
+
+
+    def run(self):
+        while True:
+            current_time = time.time()
+            dt = current_time - self.last_update
+            self.last_update = current_time
+            
+
+            key = self.screen.getch()
+            if key == ord('q'):
+                break
+            elif key == ord('r') and (self.game_over or self.game_won):
+                self.reset_game()
+            
+
+            if not self.game_over and not self.game_won:
+
+                if key == curses.KEY_LEFT:
+                    self.update_paddle('left', dt)
+                elif key == curses.KEY_RIGHT:
+                    self.update_paddle('right', dt)
+                
+
+                self.update_ball(dt)
+            
+
+            self.draw()
+            
+
+            time.sleep(max(0.01 - (time.time() - current_time), 0))
+
+
+def main():
+    curses.wrapper(lambda screen: BlockBreaker(screen).run())
+
+if __name__ == "__main__":
+    main()
