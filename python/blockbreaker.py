@@ -51,4 +51,9 @@ class BlockBreaker:
 
         self.create_blocks()
 
-        
+        self.score = 0
+        self.lives = 3
+        self.game_over = False
+        self.game_won = False
+        self.last_update = time.time()
+
