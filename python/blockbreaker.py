@@ -57,3 +57,22 @@ class BlockBreaker:
         self.game_won = False
         self.last_update = time.time()
 
+
+
+
+    def create_blocks(self):
+        self.blocks = []
+        block_rows = 5
+        block_cols = self.width // 3
+        
+
+        for row in range(block_rows):
+            for col in range(block_cols):
+                block = {
+                    'x': col * 3,
+                    'y': row + 3,
+                    'width': 3,
+                    'color': (row % 3) + 3,
+                    'hit': False
+                }
+                self.blocks.append(block)
