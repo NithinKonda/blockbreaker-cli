@@ -76,3 +76,10 @@ class BlockBreaker:
                     'hit': False
                 }
                 self.blocks.append(block)
+
+    def update_paddle(self, direction, dt):
+        move_amount = int(self.paddle_speed * dt)
+        if direction == 'left':
+            self.paddle_x = max(0, self.paddle_x - move_amount)
+        elif direction == 'right':
+            self.paddle_x = min(self.width - self.paddle_size, self.paddle_x + move_amount)
