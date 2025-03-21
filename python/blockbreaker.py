@@ -3,6 +3,7 @@ import random
 import time
 import math
 
+
 class BlockBreaker:
     def __init__(self, screen):
         self.screen = screen
@@ -11,17 +12,17 @@ class BlockBreaker:
         self.height, self.width = self.screen.getmaxyx()
 
         self.paddle_char = "═"
-        self.ball_char = "●"
+        self.ball_chars = ["O", "@", "●", "*"]
+        self.ball_frame = 0
         self.block_char = "█"
-        self.paddle_size = 8
+        self.paddle_size = 10
         
         self.ball_speed = 20
-        self.paddle_speed = 30
+        self.paddle_speed = 500
         
         self.setup_colors()
         
         self.reset_game()
-
 
     def setup_colors(self):
         if curses.has_colors():
@@ -56,9 +57,7 @@ class BlockBreaker:
         self.game_over = False
         self.game_won = False
         self.last_update = time.time()
-
-
-
+        self.animation_counter = 0
 
     def create_blocks(self):
         self.blocks = []
@@ -70,9 +69,9 @@ class BlockBreaker:
             for col in range(block_cols):
                 block = {
                     'x': col * 3,
-                    'y': row + 3,
+                    'y': row + 3,  # Start a few rows down from the top
                     'width': 3,
-                    'color': (row % 3) + 3,
+                    'color': (row % 3) + 3,  # Alternate colors (3, 4, 5)
                     'hit': False
                 }
                 self.blocks.append(block)
@@ -84,8 +83,12 @@ class BlockBreaker:
         elif direction == 'right':
             self.paddle_x = min(self.width - self.paddle_size, self.paddle_x + move_amount)
 
-
     def update_ball(self, dt):
+        # Update ball animation frame
+        if self.animation_counter % 5 == 0:
+            self.ball_frame = (self.ball_frame + 1) % len(self.ball_chars)
+            
+        # Calculate new ball position based on direction and time elapsed
         new_x = self.ball_x + self.ball_dx * self.ball_speed * dt
         new_y = self.ball_y + self.ball_dy * self.ball_speed * dt
         
@@ -104,15 +107,17 @@ class BlockBreaker:
             new_x >= self.paddle_x and 
             new_x < self.paddle_x + self.paddle_size):
             
-
-            hit_position = (new_x - self.paddle_x) / self.paddle_size
+            # Ball bounces off paddle with angle based on where it hits
+            hit_position = (new_x - self.paddle_x) / self.paddle_size  # 0.0 to 1.0
             angle = math.pi * (0.25 + 0.5 * hit_position)  # π/4 to 3π/4
             
-
+            # Update direction (bounce up with new angle)
             self.ball_dx = math.cos(angle) * (1 if hit_position >= 0.5 else -1)
             self.ball_dy = -math.sin(angle)
             
-            new_y = self.paddle_y - 1
+            new_y = self.paddle_y - 1  # Move ball above paddle
+        
+        # Handle falling below paddle (lose life)
         if new_y >= self.height:
             self.lives -= 1
             if self.lives <= 0:
@@ -162,7 +167,6 @@ class BlockBreaker:
 
                 break
 
-
     def draw(self):
         self.screen.clear()
         
@@ -177,7 +181,23 @@ class BlockBreaker:
                         self.screen.addstr(y, x, self.paddle_char)
                 except curses.error:
                     pass
-
+        
+        # Draw ball
+        ball_int_x, ball_int_y = int(self.ball_x), int(self.ball_y)
+        if 0 <= ball_int_x < self.width and 0 <= ball_int_y < self.height:
+            try:
+                # Use the current frame's ball character
+                current_ball_char = self.ball_chars[self.ball_frame]
+                if curses.has_colors():
+                    # Make the ball blink by alternating between two bright colors
+                    color = 1 if self.animation_counter % 10 < 5 else 7
+                    self.screen.addstr(ball_int_y, ball_int_x, current_ball_char, curses.color_pair(color) | curses.A_BOLD)
+                else:
+                    self.screen.addstr(ball_int_y, ball_int_x, current_ball_char, curses.A_BOLD)
+            except curses.error:
+                pass
+        
+        # Draw blocks
         for block in self.blocks:
             if block['hit']:
                 continue
@@ -257,7 +277,10 @@ class BlockBreaker:
 
             self.draw()
             
-
+            # Increment animation counter
+            self.animation_counter += 1
+            
+            # Cap frame rate
             time.sleep(max(0.01 - (time.time() - current_time), 0))
 
 
