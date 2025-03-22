@@ -197,16 +197,33 @@ impl BlockBreaker {
     self.ball_y < self.paddle_y && 
     new_x >= self.paddle_x && 
     new_x < self.paddle_x + self.paddle_size as f64 {
-     // Ball bounces off paddle with angle based on where it hits
+
      let hit_position = (new_x - self.paddle_x) / self.paddle_size as f64; // 0.0 to 1.0
      let angle = PI * (0.25 + 0.5 * hit_position); // π/4 to 3π/4
      
-     // Update direction (bounce up with new angle)
+
      self.ball_dx = angle.cos() * if hit_position >= 0.5 { 1.0 } else { -1.0 };
      self.ball_dy = -angle.sin();
      
      self.ball_y = self.paddle_y - 1.0; // Move ball above paddle
- }
+ } else if new_y >= self.height as f64 {
+
+    self.lives -= 1;
+    if self.lives <= 0 {
+        self.game_over = true;
+    } else {
+        // Reset ball position
+        self.ball_x = self.paddle_x + self.paddle_size as f64 / 2.0;
+        self.ball_y = self.paddle_y - 1.0;
+        
+        // Random angle between π/6 and 5π/6
+        let mut rng = rand::thread_rng();
+        let angle = PI * (1.0/6.0 + 2.0/3.0 * rng.gen::<f64>());
+        self.ball_dx = angle.cos() * if rng.gen::<bool>() { 1.0 } else { -1.0 };
+        self.ball_dy = -angle.sin();
+    }
+    return;
+}
     
 }
 
