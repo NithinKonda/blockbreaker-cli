@@ -176,6 +176,15 @@ impl BlockBreaker {
         if self.animation_counter % 5 == 0 {
             self.ball_frame = (self.ball_frame + 1) % self.ball_chars.len();
         }
+
+        let new_x = self.ball_x + self.ball_dx * self.ball_speed * dt;
+        let new_y = self.ball_y + self.ball_dy * self.ball_speed * dt;
+        
+        if new_x < 0.0 || new_x >= self.width as f64 {
+            self.ball_dx = -self.ball_dx;
+            let new_x = new_x.max(0.0).min((self.width - 1) as f64);
+            self.ball_x = new_x;
+            return;
     }
     
 }
