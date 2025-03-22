@@ -235,6 +235,27 @@ impl BlockBreaker {
     }
 }
 }
+
+
+fn check_block_collisions(&mut self) {
+    let ball_int_x = self.ball_x as usize;
+    let ball_int_y = self.ball_y as usize;
+    
+    for block in &mut self.blocks {
+        if block.hit {
+            continue;
+        }
+        
+        if ball_int_y == block.y && 
+           ball_int_x >= block.x && 
+           ball_int_x < block.x + block.width {
+            block.hit = true;
+            self.score += 10;
+            self.ball_dy = -self.ball_dy;
+            break;
+        }
+    }
+}
     
 }
 
