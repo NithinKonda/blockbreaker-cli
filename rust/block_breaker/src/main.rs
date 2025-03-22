@@ -7,6 +7,13 @@ use crossterm::{
     Result,
 };
 
+use std::{
+    io::{stdout, Write},
+    time::{Duration, Instant},
+};
+use rand::Rng;
+use std::f64::consts::PI;
+
 fn main() {
     println!("Hello, world!");
 }
