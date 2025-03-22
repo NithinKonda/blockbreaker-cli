@@ -137,6 +137,15 @@ impl BlockBreaker {
             }
         }
     }
+
+
+    fn reset_game(&mut self) {
+        self.paddle_x = (self.width - self.paddle_size) as f64 / 2.0;
+        self.paddle_y = (self.height - 2) as f64;
+        
+        self.ball_x = self.width as f64 / 2.0;
+        self.ball_y = self.paddle_y - 1.0;
+    }
     
 }
 
