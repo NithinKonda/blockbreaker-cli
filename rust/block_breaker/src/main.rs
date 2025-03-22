@@ -32,8 +32,26 @@ struct BlockBreaker {
     ball_frame: usize,
     block_char: &'static str,
     paddle_size: usize,
-    
 
+    ball_speed: f64,
+    paddle_speed: f64,
+    
+    paddle_x: f64,
+    paddle_y: f64,
+    
+    ball_x: f64,
+    ball_y: f64,
+    ball_dx: f64,
+    ball_dy: f64,
+    
+    blocks: Vec<Block>,
+    
+    score: usize,
+    lives: usize,
+    game_over: bool,
+    game_won: bool,
+    last_update: Instant,
+    animation_counter: usize,
 }
 
 fn main() {
