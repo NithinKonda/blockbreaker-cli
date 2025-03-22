@@ -391,6 +391,26 @@ fn run(&mut self) -> Result<()> {
 }
 }
 
-fn main() {
-    println!("Hello, world!");
+fn main() -> Result<()> {
+
+    terminal::enable_raw_mode()?;
+    execute!(
+        stdout(),
+        EnterAlternateScreen,
+        Hide,
+    )?;
+    
+
+    let mut game = BlockBreaker::new();
+    let result = game.run();
+    
+
+    execute!(
+        stdout(),
+        LeaveAlternateScreen,
+        Show,
+    )?;
+    terminal::disable_raw_mode()?;
+    
+    result
 }
