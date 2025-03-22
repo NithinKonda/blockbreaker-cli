@@ -223,6 +223,17 @@ impl BlockBreaker {
         self.ball_dy = -angle.sin();
     }
     return;
+    else {
+        self.ball_x = new_x;
+        self.ball_y = new_y;
+    }
+    
+    self.check_block_collisions();
+    
+    if self.blocks.iter().all(|block| block.hit) {
+        self.game_won = true;
+    }
+}
 }
     
 }
