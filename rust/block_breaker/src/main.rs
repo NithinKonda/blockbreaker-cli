@@ -256,6 +256,91 @@ fn check_block_collisions(&mut self) {
         }
     }
 }
+
+fn draw(&self) -> Result<()> {
+    execute!(stdout(), Clear(ClearType::All))?;
+    
+
+    for i in 0..self.paddle_size {
+        let x = (self.paddle_x + i as f64) as u16;
+        let y = self.paddle_y as u16;
+        if x < self.width as u16 && y < self.height as u16 {
+            execute!(
+                stdout(),
+                crossterm::cursor::MoveTo(x, y),
+                SetForegroundColor(Color::Green),
+                Print(self.paddle_char),
+            )?;
+        }
+    }
+    
+
+    let ball_int_x = self.ball_x as u16;
+    let ball_int_y = self.ball_y as u16;
+    if ball_int_x < self.width as u16 && ball_int_y < self.height as u16 {
+        let current_ball_char = self.ball_chars[self.ball_frame];
+        let color = if self.animation_counter % 10 < 5 { Color::White } else { Color::Yellow };
+        execute!(
+            stdout(),
+            crossterm::cursor::MoveTo(ball_int_x, ball_int_y),
+            SetForegroundColor(color),
+            Print(current_ball_char),
+        )?;
+    }
+    
+
+    for block in &self.blocks {
+        if block.hit {
+            continue;
+        }
+        
+        for i in 0..block.width {
+            let x = (block.x + i) as u16;
+            let y = block.y as u16;
+            if x < self.width as u16 && y < self.height as u16 {
+                execute!(
+                    stdout(),
+                    crossterm::cursor::MoveTo(x, y),
+                    SetForegroundColor(block.color),
+                    Print(self.block_char),
+                )?;
+            }
+        }
+    }
+    
+
+    let status_text = format!("Score: {}  Lives: {}", self.score, self.lives);
+    execute!(
+        stdout(),
+        crossterm::cursor::MoveTo(0, 0),
+        SetForegroundColor(Color::Yellow),
+        Print(status_text),
+    )?;
+    
+
+    if self.game_over {
+        let game_over_text = "GAME OVER - Press 'r' to restart or 'q' to quit";
+        let x = ((self.width as isize - game_over_text.len() as isize) / 2).max(0) as u16;
+        execute!(
+            stdout(),
+            crossterm::cursor::MoveTo(x, (self.height / 2) as u16),
+            SetForegroundColor(Color::Red),
+            Print(game_over_text),
+        )?;
+    } else if self.game_won {
+        let win_text = "YOU WIN! - Press 'r' to restart or 'q' to quit";
+        let x = ((self.width as isize - win_text.len() as isize) / 2).max(0) as u16;
+        execute!(
+            stdout(),
+            crossterm::cursor::MoveTo(x, (self.height / 2) as u16),
+            SetForegroundColor(Color::Yellow),
+            Print(win_text),
+        )?;
+    }
+    
+    stdout().flush()?;
+    Ok(())
+}
     
 }
 
