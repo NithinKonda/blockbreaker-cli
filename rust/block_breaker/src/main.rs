@@ -125,8 +125,17 @@ impl BlockBreaker {
                     2 => Color::Magenta,
                     _ => Color::White,
                 };
-
-
+                let block = Block {
+                    x: col * 3,
+                    y: row + 3,
+                    width: 3,
+                    color,
+                    hit: false,
+                };
+                
+                self.blocks.push(block);
+            }
+        }
     }
     
 }
