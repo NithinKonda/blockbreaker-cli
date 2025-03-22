@@ -109,6 +109,15 @@ impl BlockBreaker {
         game
     }
 
+
+
+    fn create_blocks(&mut self) {
+        self.blocks.clear();
+        let block_rows = 5;
+        let block_cols = self.width / 3;
+
+        
+    }
     
 }
 
