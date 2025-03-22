@@ -80,7 +80,7 @@ impl BlockBreaker {
             paddle_size,
             
             ball_speed: 20.0,
-            paddle_speed: 500.0,
+            paddle_speed: 50.0,
             
             paddle_x,
             paddle_y,
