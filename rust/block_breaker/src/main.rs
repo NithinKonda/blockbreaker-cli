@@ -169,6 +169,14 @@ impl BlockBreaker {
             self.paddle_x = (self.paddle_x + move_amount).min((self.width - self.paddle_size) as f64);
         }
     }
+
+
+    fn update_ball(&mut self, dt: f64) {
+
+        if self.animation_counter % 5 == 0 {
+            self.ball_frame = (self.ball_frame + 1) % self.ball_chars.len();
+        }
+    }
     
 }
 
