@@ -116,7 +116,17 @@ impl BlockBreaker {
         let block_rows = 5;
         let block_cols = self.width / 3;
 
-        
+
+        for row in 0..block_rows {
+            for col in 0..block_cols {
+                let color = match row % 3 {
+                    0 => Color::Cyan,
+                    1 => Color::Blue,
+                    2 => Color::Magenta,
+                    _ => Color::White,
+                };
+
+
     }
     
 }
