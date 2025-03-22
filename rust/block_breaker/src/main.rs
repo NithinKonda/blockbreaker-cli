@@ -23,6 +23,19 @@ struct Block {
     hit: bool,
 }
 
+
+struct BlockBreaker {
+    width: usize,
+    height: usize,
+    paddle_char: &'static str,
+    ball_chars: Vec<&'static str>,
+    ball_frame: usize,
+    block_char: &'static str,
+    paddle_size: usize,
+    
+
+}
+
 fn main() {
     println!("Hello, world!");
 }
