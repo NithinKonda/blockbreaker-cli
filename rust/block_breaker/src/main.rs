@@ -159,6 +159,16 @@ impl BlockBreaker {
         self.last_update = Instant::now();
         self.animation_counter = 0;
     }
+
+
+    fn update_paddle(&mut self, direction: &str, dt: f64) {
+        let move_amount = self.paddle_speed * dt;
+        if direction == "left" {
+            self.paddle_x = (self.paddle_x - move_amount).max(0.0);
+        } else if direction == "right" {
+            self.paddle_x = (self.paddle_x + move_amount).min((self.width - self.paddle_size) as f64);
+        }
+    }
     
 }
 
