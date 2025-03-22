@@ -145,6 +145,19 @@ impl BlockBreaker {
         
         self.ball_x = self.width as f64 / 2.0;
         self.ball_y = self.paddle_y - 1.0;
+
+        let angle = PI / 4.0;
+        self.ball_dx = angle.cos();
+        self.ball_dy = -angle.sin();
+        
+        self.create_blocks();
+        
+        self.score = 0;
+        self.lives = 3;
+        self.game_over = false;
+        self.game_won = false;
+        self.last_update = Instant::now();
+        self.animation_counter = 0;
     }
     
 }
