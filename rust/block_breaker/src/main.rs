@@ -342,6 +342,53 @@ fn draw(&self) -> Result<()> {
     Ok(())
 }
     
+fn run(&mut self) -> Result<()> {
+    loop {
+        let current_time = Instant::now();
+        let dt = (current_time - self.last_update).as_secs_f64();
+        self.last_update = current_time;
+        
+        if event::poll(Duration::from_millis(1))? {
+            if let Event::Key(KeyEvent { code, .. }) = event::read()? {
+                match code {
+                    KeyCode::Char('q') => break,
+                    KeyCode::Char('r') => {
+                        if self.game_over || self.game_won {
+                            self.reset_game();
+                        }
+                    },
+                    KeyCode::Left => {
+                        if !self.game_over && !self.game_won {
+                            self.update_paddle("left", dt);
+                        }
+                    },
+                    KeyCode::Right => {
+                        if !self.game_over && !self.game_won {
+                            self.update_paddle("right", dt);
+                        }
+                    },
+                    _ => {}
+                }
+            }
+        }
+        
+
+        if !self.game_over && !self.game_won {
+            self.update_ball(dt);
+        }
+        
+
+        self.draw()?;
+        
+
+        self.animation_counter += 1;
+        
+
+        std::thread::sleep(Duration::from_millis(10));
+    }
+    
+    Ok(())
+}
 }
 
 fn main() {
