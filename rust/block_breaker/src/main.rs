@@ -186,6 +186,12 @@ impl BlockBreaker {
             self.ball_x = new_x;
             return;
     }
+
+    if new_y < 0.0 {
+        self.ball_dy = -self.ball_dy;
+        self.ball_y = 0.0;
+        return;
+    }
     
 }
 
