@@ -75,7 +75,41 @@ impl BlockBreaker {
         let ball_dx = angle.cos();
         let ball_dy = -angle.sin();
 
+        let mut game = BlockBreaker {
+            width,
+            height,
+            paddle_char: "═",
+            ball_chars: vec!["O", "@", "●", "*"],
+            ball_frame: 0,
+            block_char: "█",
+            paddle_size,
+            
+            ball_speed: 20.0,
+            paddle_speed: 500.0,
+            
+            paddle_x,
+            paddle_y,
+            
+            ball_x,
+            ball_y,
+            ball_dx,
+            ball_dy,
+            
+            blocks: Vec::new(),
+            
+            score: 0,
+            lives: 3,
+            game_over: false,
+            game_won: false,
+            last_update: Instant::now(),
+            animation_counter: 0,
+        };
+        
+        game.create_blocks();
+        game
     }
+
+    
 }
 
 fn main() {
