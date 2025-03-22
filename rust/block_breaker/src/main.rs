@@ -54,6 +54,17 @@ struct BlockBreaker {
     animation_counter: usize,
 }
 
+
+
+impl BlockBreaker {
+    fn new() -> Self {
+        let (width, height) = terminal::size().unwrap();
+        let width = width as usize;
+        let height = height as usize;
+
+    }
+}
+
 fn main() {
     println!("Hello, world!");
 }
