@@ -62,6 +62,19 @@ impl BlockBreaker {
         let width = width as usize;
         let height = height as usize;
 
+
+         
+        let paddle_size = 10;
+        let paddle_x = (width - paddle_size) as f64 / 2.0;
+        let paddle_y = (height - 2) as f64;
+        
+        let ball_x = width as f64 / 2.0;
+        let ball_y = paddle_y - 1.0;
+        
+        let angle = PI / 4.0;
+        let ball_dx = angle.cos();
+        let ball_dy = -angle.sin();
+
     }
 }
 
