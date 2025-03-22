@@ -14,6 +14,15 @@ use std::{
 use rand::Rng;
 use std::f64::consts::PI;
 
+
+struct Block {
+    x: usize,
+    y: usize,
+    width: usize,
+    color: Color,
+    hit: bool,
+}
+
 fn main() {
     println!("Hello, world!");
 }
