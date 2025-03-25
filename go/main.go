@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"math"
+	"os"
 	"time"
 
 	"github.com/gdamore/tcell/v2"
+	"golang.org/x/exp/rand"
 )
 
 type Block struct {
@@ -188,8 +191,7 @@ func (g *BlockBreaker) updateBall(dt float64) {
 		g.ballDY = -math.Sin(angle)
 
 		newY = g.paddleY - 1 // Move ball above paddle
-	}
-	else if newY >= float64(g.height) {
+	} else if newY >= float64(g.height) {
 		// Handle falling below paddle (lose life)
 		g.lives--
 		if g.lives <= 0 {
@@ -198,7 +200,7 @@ func (g *BlockBreaker) updateBall(dt float64) {
 			// Reset ball position
 			g.ballX = g.paddleX + float64(g.paddleSize)/2
 			g.ballY = g.paddleY - 1
-			
+
 			// Random angle between π/6 and 5π/6
 			angle := math.Pi * (1.0/6.0 + 2.0/3.0*rand.Float64())
 			multiplier := 1.0
@@ -212,9 +214,9 @@ func (g *BlockBreaker) updateBall(dt float64) {
 	}
 	g.ballX = newX
 	g.ballY = newY
-	
+
 	g.checkBlockCollisions()
-	
+
 	allHit := true
 	for _, block := range g.blocks {
 		if !block.hit {
@@ -222,25 +224,24 @@ func (g *BlockBreaker) updateBall(dt float64) {
 			break
 		}
 	}
-	
+
 	if allHit {
 		g.gameWon = true
 	}
 }
 
-
 func (g *BlockBreaker) checkBlockCollisions() {
 	ballIntX := int(g.ballX)
 	ballIntY := int(g.ballY)
-	
+
 	for i := range g.blocks {
 		if g.blocks[i].hit {
 			continue
 		}
-		
-		if ballIntY == g.blocks[i].y && 
-		   ballIntX >= g.blocks[i].x && 
-		   ballIntX < g.blocks[i].x+g.blocks[i].width {
+
+		if ballIntY == g.blocks[i].y &&
+			ballIntX >= g.blocks[i].x &&
+			ballIntX < g.blocks[i].x+g.blocks[i].width {
 			g.blocks[i].hit = true
 			g.score += 10
 			g.ballDY = -g.ballDY
@@ -249,12 +250,11 @@ func (g *BlockBreaker) checkBlockCollisions() {
 	}
 }
 
-
 func (g *BlockBreaker) draw() {
 	g.screen.Clear()
-	
+
 	defStyle := tcell.StyleDefault
-	
+
 	paddleStyle := defStyle.Foreground(tcell.ColorGreen)
 	for i := 0; i < g.paddleSize; i++ {
 		x := int(g.paddleX) + i
@@ -280,7 +280,7 @@ func (g *BlockBreaker) draw() {
 		if block.hit {
 			continue
 		}
-		
+
 		blockStyle := defStyle.Foreground(block.color)
 		for i := 0; i < block.width; i++ {
 			x := block.x + i
@@ -317,11 +317,9 @@ func (g *BlockBreaker) draw() {
 			}
 		}
 	}
-	
+
 	g.screen.Show()
 }
-
-
 
 func (g *BlockBreaker) Run() {
 
@@ -331,13 +329,11 @@ func (g *BlockBreaker) Run() {
 			eventChan <- g.screen.PollEvent()
 		}
 	}()
-	
 
 	for {
 		currentTime := time.Now()
 		dt := currentTime.Sub(g.lastUpdate).Seconds()
 		g.lastUpdate = currentTime
-		
 
 		select {
 		case event := <-eventChan:
@@ -370,18 +366,14 @@ func (g *BlockBreaker) Run() {
 		default:
 
 		}
-		
 
 		if !g.gameOver && !g.gameWon {
 			g.updateBall(dt)
 		}
-		
 
 		g.draw()
-		
 
 		g.animationCounter++
-		
 
 		time.Sleep(10 * time.Millisecond)
 	}
@@ -390,30 +382,27 @@ func (g *BlockBreaker) Run() {
 func main() {
 
 	rand.Seed(time.Now().UnixNano())
-	
 
 	screen, err := tcell.NewScreen()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating screen: %v\n", err)
 		os.Exit(1)
 	}
-	
+
 	if err := screen.Init(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error initializing screen: %v\n", err)
 		os.Exit(1)
 	}
-	
 
 	screen.SetStyle(tcell.StyleDefault.
 		Background(tcell.ColorBlack).
 		Foreground(tcell.ColorWhite))
 	screen.Clear()
-	
 
 	defer func() {
 		screen.Fini()
 	}()
-	
+
 	game := NewBlockBreaker(screen)
 	game.Run()
 }
