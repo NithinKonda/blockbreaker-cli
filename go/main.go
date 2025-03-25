@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"time"
 
 	"github.com/gdamore/tcell/v2"
@@ -51,5 +52,12 @@ func NewBlockBreaker(screen tcell.Screen) *BlockBreaker {
 	paddleSize := 10
 	paddleX := float64(width-paddleSize) / 2
 	paddleY := float64(height - 2)
+
+	ballX := float64(width) / 2
+	ballY := paddleY - 1
+
+	angle := math.Pi / 4
+	ballDX := math.Cos(angle)
+	ballDY := -math.Sin(angle)
 
 }
