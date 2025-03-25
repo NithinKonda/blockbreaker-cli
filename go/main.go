@@ -60,4 +60,37 @@ func NewBlockBreaker(screen tcell.Screen) *BlockBreaker {
 	ballDX := math.Cos(angle)
 	ballDY := -math.Sin(angle)
 
+	game := &BlockBreaker{
+		screen:     screen,
+		width:      width,
+		height:     height,
+		paddleChar: '═',
+		ballChars:  []rune{'O', '@', '●', '*'},
+		ballFrame:  0,
+		blockChar:  '█',
+		paddleSize: paddleSize,
+
+		ballSpeed:   20.0,
+		paddleSpeed: 500.0,
+
+		paddleX: paddleX,
+		paddleY: paddleY,
+
+		ballX:  ballX,
+		ballY:  ballY,
+		ballDX: ballDX,
+		ballDY: ballDY,
+
+		blocks: []Block{},
+
+		score:            0,
+		lives:            3,
+		gameOver:         false,
+		gameWon:          false,
+		lastUpdate:       time.Now(),
+		animationCounter: 0,
+	}
+
+	game.createBlocks()
+	return game
 }
