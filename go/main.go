@@ -124,3 +124,24 @@ func (g *BlockBreaker) createBlocks() {
 		}
 	}
 }
+
+func (g *BlockBreaker) resetGame() {
+	g.paddleX = float64(g.width-g.paddleSize) / 2
+	g.paddleY = float64(g.height - 2)
+
+	g.ballX = float64(g.width) / 2
+	g.ballY = g.paddleY - 1
+
+	angle := math.Pi / 4
+	g.ballDX = math.Cos(angle)
+	g.ballDY = -math.Sin(angle)
+
+	g.createBlocks()
+
+	g.score = 0
+	g.lives = 3
+	g.gameOver = false
+	g.gameWon = false
+	g.lastUpdate = time.Now()
+	g.animationCounter = 0
+}
