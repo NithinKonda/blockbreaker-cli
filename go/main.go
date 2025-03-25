@@ -160,4 +160,16 @@ func (g *BlockBreaker) updateBall(dt float64) {
 	if g.animationCounter%5 == 0 {
 		g.ballFrame = (g.ballFrame + 1) % len(g.ballChars)
 	}
+	newX := g.ballX + g.ballDX*g.ballSpeed*dt
+	newY := g.ballY + g.ballDY*g.ballSpeed*dt
+
+	if newX < 0 || newX >= float64(g.width) {
+		g.ballDX = -g.ballDX
+		newX = math.Max(0, math.Min(newX, float64(g.width-1)))
+	}
+
+	if newY < 0 {
+		g.ballDY = -g.ballDY
+		newY = 0
+	}
 }
