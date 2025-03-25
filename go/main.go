@@ -109,7 +109,7 @@ func (g *BlockBreaker) createBlocks() {
 			var color tcell.Color
 			switch row % 3 {
 			case 0:
-				color = tcell.ColorCyan
+				color = tcell.GetColor("cyan")
 			case 1:
 				color = tcell.ColorBlue
 			case 2:
