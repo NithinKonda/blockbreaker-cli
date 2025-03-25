@@ -6,8 +6,9 @@ import (
 	"os"
 	"time"
 
+	"math/rand"
+
 	"github.com/gdamore/tcell/v2"
-	"golang.org/x/exp/rand"
 )
 
 type Block struct {
