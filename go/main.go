@@ -145,3 +145,12 @@ func (g *BlockBreaker) resetGame() {
 	g.lastUpdate = time.Now()
 	g.animationCounter = 0
 }
+
+func (g *BlockBreaker) updatePaddle(direction string, dt float64) {
+	moveAmount := g.paddleSpeed * dt
+	if direction == "left" {
+		g.paddleX = math.Max(0, g.paddleX-moveAmount)
+	} else if direction == "right" {
+		g.paddleX = math.Min(float64(g.width-g.paddleSize), g.paddleX+moveAmount)
+	}
+}
