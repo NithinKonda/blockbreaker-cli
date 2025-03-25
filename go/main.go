@@ -210,4 +210,20 @@ func (g *BlockBreaker) updateBall(dt float64) {
 		}
 		return
 	}
+	g.ballX = newX
+	g.ballY = newY
+	
+	g.checkBlockCollisions()
+	
+	allHit := true
+	for _, block := range g.blocks {
+		if !block.hit {
+			allHit = false
+			break
+		}
+	}
+	
+	if allHit {
+		g.gameWon = true
+	}
 }
