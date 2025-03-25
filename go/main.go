@@ -263,3 +263,15 @@ func (g *BlockBreaker) draw() {
 			g.screen.SetContent(x, y, g.paddleChar, nil, paddleStyle)
 		}
 	}
+
+	ballIntX := int(g.ballX)
+	ballIntY := int(g.ballY)
+	if ballIntX >= 0 && ballIntX < g.width && ballIntY >= 0 && ballIntY < g.height {
+		currentBallChar := g.ballChars[g.ballFrame]
+		ballColor := tcell.ColorWhite
+		if g.animationCounter%10 < 5 {
+			ballColor = tcell.ColorYellow
+		}
+		ballStyle := defStyle.Foreground(ballColor)
+		g.screen.SetContent(ballIntX, ballIntY, currentBallChar, nil, ballStyle)
+	}
