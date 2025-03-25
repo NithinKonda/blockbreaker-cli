@@ -44,3 +44,12 @@ type BlockBreaker struct {
 	lastUpdate       time.Time
 	animationCounter int
 }
+
+func NewBlockBreaker(screen tcell.Screen) *BlockBreaker {
+	width, height := screen.Size()
+
+	paddleSize := 10
+	paddleX := float64(width-paddleSize) / 2
+	paddleY := float64(height - 2)
+
+}
