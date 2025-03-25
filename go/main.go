@@ -275,3 +275,19 @@ func (g *BlockBreaker) draw() {
 		ballStyle := defStyle.Foreground(ballColor)
 		g.screen.SetContent(ballIntX, ballIntY, currentBallChar, nil, ballStyle)
 	}
+
+	for _, block := range g.blocks {
+		if block.hit {
+			continue
+		}
+		
+		blockStyle := defStyle.Foreground(block.color)
+		for i := 0; i < block.width; i++ {
+			x := block.x + i
+			y := block.y
+			if x >= 0 && x < g.width && y >= 0 && y < g.height {
+				g.screen.SetContent(x, y, g.blockChar, nil, blockStyle)
+			}
+		}
+	}
+}
