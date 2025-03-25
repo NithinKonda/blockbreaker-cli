@@ -248,3 +248,18 @@ func (g *BlockBreaker) checkBlockCollisions() {
 		}
 	}
 }
+
+
+func (g *BlockBreaker) draw() {
+	g.screen.Clear()
+	
+	defStyle := tcell.StyleDefault
+	
+	paddleStyle := defStyle.Foreground(tcell.ColorGreen)
+	for i := 0; i < g.paddleSize; i++ {
+		x := int(g.paddleX) + i
+		y := int(g.paddleY)
+		if x >= 0 && x < g.width && y >= 0 && y < g.height {
+			g.screen.SetContent(x, y, g.paddleChar, nil, paddleStyle)
+		}
+	}
