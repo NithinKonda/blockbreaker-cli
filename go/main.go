@@ -320,3 +320,69 @@ func (g *BlockBreaker) draw() {
 	
 	g.screen.Show()
 }
+
+
+
+func (g *BlockBreaker) Run() {
+
+	eventChan := make(chan tcell.Event)
+	go func() {
+		for {
+			eventChan <- g.screen.PollEvent()
+		}
+	}()
+	
+
+	for {
+		currentTime := time.Now()
+		dt := currentTime.Sub(g.lastUpdate).Seconds()
+		g.lastUpdate = currentTime
+		
+
+		select {
+		case event := <-eventChan:
+			switch ev := event.(type) {
+			case *tcell.EventKey:
+				switch ev.Key() {
+				case tcell.KeyEscape, tcell.KeyCtrlC:
+					return
+				case tcell.KeyRune:
+					switch ev.Rune() {
+					case 'q':
+						return
+					case 'r':
+						if g.gameOver || g.gameWon {
+							g.resetGame()
+						}
+					}
+				case tcell.KeyLeft:
+					if !g.gameOver && !g.gameWon {
+						g.updatePaddle("left", dt)
+					}
+				case tcell.KeyRight:
+					if !g.gameOver && !g.gameWon {
+						g.updatePaddle("right", dt)
+					}
+				}
+			case *tcell.EventResize:
+				g.width, g.height = g.screen.Size()
+			}
+		default:
+
+		}
+		
+
+		if !g.gameOver && !g.gameWon {
+			g.updateBall(dt)
+		}
+		
+
+		g.draw()
+		
+
+		g.animationCounter++
+		
+
+		time.Sleep(10 * time.Millisecond)
+	}
+}
