@@ -227,3 +227,24 @@ func (g *BlockBreaker) updateBall(dt float64) {
 		g.gameWon = true
 	}
 }
+
+
+func (g *BlockBreaker) checkBlockCollisions() {
+	ballIntX := int(g.ballX)
+	ballIntY := int(g.ballY)
+	
+	for i := range g.blocks {
+		if g.blocks[i].hit {
+			continue
+		}
+		
+		if ballIntY == g.blocks[i].y && 
+		   ballIntX >= g.blocks[i].x && 
+		   ballIntX < g.blocks[i].x+g.blocks[i].width {
+			g.blocks[i].hit = true
+			g.score += 10
+			g.ballDY = -g.ballDY
+			break
+		}
+	}
+}
