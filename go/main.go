@@ -189,4 +189,25 @@ func (g *BlockBreaker) updateBall(dt float64) {
 
 		newY = g.paddleY - 1 // Move ball above paddle
 	}
+	else if newY >= float64(g.height) {
+		// Handle falling below paddle (lose life)
+		g.lives--
+		if g.lives <= 0 {
+			g.gameOver = true
+		} else {
+			// Reset ball position
+			g.ballX = g.paddleX + float64(g.paddleSize)/2
+			g.ballY = g.paddleY - 1
+			
+			// Random angle between π/6 and 5π/6
+			angle := math.Pi * (1.0/6.0 + 2.0/3.0*rand.Float64())
+			multiplier := 1.0
+			if rand.Float64() > 0.5 {
+				multiplier = -1.0
+			}
+			g.ballDX = math.Cos(angle) * multiplier
+			g.ballDY = -math.Sin(angle)
+		}
+		return
+	}
 }
