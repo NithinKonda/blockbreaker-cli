@@ -94,3 +94,10 @@ func NewBlockBreaker(screen tcell.Screen) *BlockBreaker {
 	game.createBlocks()
 	return game
 }
+
+func (g *BlockBreaker) createBlocks() {
+	g.blocks = []Block{}
+	blockRows := 5
+	blockCols := g.width / 3
+
+}
