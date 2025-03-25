@@ -154,3 +154,10 @@ func (g *BlockBreaker) updatePaddle(direction string, dt float64) {
 		g.paddleX = math.Min(float64(g.width-g.paddleSize), g.paddleX+moveAmount)
 	}
 }
+
+func (g *BlockBreaker) updateBall(dt float64) {
+
+	if g.animationCounter%5 == 0 {
+		g.ballFrame = (g.ballFrame + 1) % len(g.ballChars)
+	}
+}
