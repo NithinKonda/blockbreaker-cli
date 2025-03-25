@@ -173,12 +173,20 @@ func (g *BlockBreaker) updateBall(dt float64) {
 		newY = 0
 	}
 
-
-
-	if newY >= g.paddleY && 
-	   g.ballY < g.paddleY && 
-	   newX >= g.paddleX && 
-	   newX < g.paddleX+float64(g.paddleSize) {
+	if newY >= g.paddleY &&
+		g.ballY < g.paddleY &&
+		newX >= g.paddleX &&
+		newX < g.paddleX+float64(g.paddleSize) {
 		hitPosition := (newX - g.paddleX) / float64(g.paddleSize)
-		angle := math.Pi * (0.25 + 0.5*hitPosition) 
+		angle := math.Pi * (0.25 + 0.5*hitPosition)
+
+		multiplier := 1.0
+		if hitPosition < 0.5 {
+			multiplier = -1.0
+		}
+		g.ballDX = math.Cos(angle) * multiplier
+		g.ballDY = -math.Sin(angle)
+
+		newY = g.paddleY - 1 // Move ball above paddle
+	}
 }
