@@ -298,4 +298,25 @@ func (g *BlockBreaker) draw() {
 			g.screen.SetContent(i, 0, r, nil, statusStyle)
 		}
 	}
+	if g.gameOver {
+		gameOverText := "GAME OVER - Press 'r' to restart or 'q' to quit"
+		x := int(math.Max(0, float64(g.width-len(gameOverText))/2))
+		gameOverStyle := defStyle.Foreground(tcell.ColorRed)
+		for i, r := range gameOverText {
+			if x+i < g.width {
+				g.screen.SetContent(x+i, g.height/2, r, nil, gameOverStyle)
+			}
+		}
+	} else if g.gameWon {
+		winText := "YOU WIN! - Press 'r' to restart or 'q' to quit"
+		x := int(math.Max(0, float64(g.width-len(winText))/2))
+		winStyle := defStyle.Foreground(tcell.ColorYellow)
+		for i, r := range winText {
+			if x+i < g.width {
+				g.screen.SetContent(x+i, g.height/2, r, nil, winStyle)
+			}
+		}
+	}
+	
+	g.screen.Show()
 }
