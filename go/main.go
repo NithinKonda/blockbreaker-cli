@@ -290,4 +290,12 @@ func (g *BlockBreaker) draw() {
 			}
 		}
 	}
+
+	statusText := fmt.Sprintf("Score: %d  Lives: %d", g.score, g.lives)
+	statusStyle := defStyle.Foreground(tcell.ColorYellow)
+	for i, r := range statusText {
+		if i < g.width {
+			g.screen.SetContent(i, 0, r, nil, statusStyle)
+		}
+	}
 }
