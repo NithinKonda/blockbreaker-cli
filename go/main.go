@@ -386,3 +386,34 @@ func (g *BlockBreaker) Run() {
 		time.Sleep(10 * time.Millisecond)
 	}
 }
+
+func main() {
+
+	rand.Seed(time.Now().UnixNano())
+	
+
+	screen, err := tcell.NewScreen()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating screen: %v\n", err)
+		os.Exit(1)
+	}
+	
+	if err := screen.Init(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing screen: %v\n", err)
+		os.Exit(1)
+	}
+	
+
+	screen.SetStyle(tcell.StyleDefault.
+		Background(tcell.ColorBlack).
+		Foreground(tcell.ColorWhite))
+	screen.Clear()
+	
+
+	defer func() {
+		screen.Fini()
+	}()
+	
+	game := NewBlockBreaker(screen)
+	game.Run()
+}
