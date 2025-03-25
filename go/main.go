@@ -100,4 +100,16 @@ func (g *BlockBreaker) createBlocks() {
 	blockRows := 5
 	blockCols := g.width / 3
 
+
+	for row := 0; row < blockRows; row++ {
+		for col := 0; col < blockCols; col++ {
+			var color tcell.Color
+			switch row % 3 {
+			case 0:
+				color = tcell.ColorCyan
+			case 1:
+				color = tcell.ColorBlue
+			case 2:
+				color = tcell.ColorPurple
+			}
 }
